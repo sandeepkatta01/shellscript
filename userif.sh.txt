@@ -1,0 +1,18 @@
+#!/bin/bash
+read -p "Please enter the username" USER_NAME
+SPEC='!@#$%&*'
+SPECCHAR=$(echo ${SPEC} | fold -w1| shuf | head -1)
+PASSWORD=India@${RANDOM}${SPECCHAR}
+EXUSER=$(cat /etc/passwd |grep -i ${USER_NAME} |cut -d ":" -f1)
+echo "the existing username is ${EXUSER}"
+if [[ ${EXUSER} == ${USER_NAME} ]]
+then
+echo "user already exists please use a different username"
+else
+echo " creating the new username"
+sleep 3s
+useradd -m ${USER_NAME}
+echo ${PASSWORD} |passwd --stdin ${USER_NAME}
+passwd -e ${USER_NAME}
+echo "username is ${USER_NAME} password is ${PASSWORD}"
+fi
